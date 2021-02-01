@@ -27,6 +27,11 @@ namespace Domain.Services.Implementations
             this.settings = settings;
         }
 
+        /// <summary>
+        /// Just get the full requested page in string format
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public virtual async Task<ScraperDataResponse> GetAsync(ScraperRequest request)
         {
             var response = new ScraperDataResponse();
@@ -52,8 +57,16 @@ namespace Domain.Services.Implementations
 
         public abstract Task<List<GroupingFileInformationResponse>> GetGroupingFileInformationAsync(ScraperRequest request);
 
+        /// <summary>
+        /// Expose the Notifications to another layer
+        /// </summary>
+        /// <returns></returns>
         public Notifiable GetNotifiable() => this;
 
+        /// <summary>
+        /// Use Factory to create an instance of HttpClient
+        /// </summary>
+        /// <returns></returns>
         protected HttpClient CreateHttpClient() => this.httpClientFactory.CreateClient();
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Domain.Dom.GitHub
 {
@@ -187,6 +186,10 @@ namespace Domain.Dom.GitHub
             return fileName?.Text();
         }
 
+        /// <summary>
+        /// Find the list of folders/files to navigate
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<GitHubLinkAccess> GetFolderListItens()
         {
             var itens = new List<GitHubLinkAccess>();

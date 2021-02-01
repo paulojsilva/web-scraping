@@ -3,6 +3,9 @@ using System;
 
 namespace Domain.Dom.GitHub
 {
+    /// <summary>
+    /// Static filters for GitHub elements
+    /// </summary>
     public static class GitHubFilter
     {
         public static Func<IElement, bool> fileContents = (e) => e.LocalName == "div" &&

@@ -30,6 +30,11 @@ namespace Application.Services.Implementations
 
         public abstract Task<ServiceTResult<List<GroupingFileInformationResponse>>> GetGroupingFileInformationAsync(ScraperRequest request);
 
+        /// <summary>
+        /// Basic and fast validations on request contract.
+        /// Useful before accessing the domain layer.
+        /// </summary>
+        /// <param name="request">Scraper contract request</param>
         protected virtual void FastValidation(ScraperRequest request)
         {
             if (request == null)
@@ -44,6 +49,12 @@ namespace Application.Services.Implementations
             }
         }
 
+        /// <summary>
+        /// Get Notifications from domain, application and return the generic ServiceTResult
+        /// </summary>
+        /// <typeparam name="T">Generic type</typeparam>
+        /// <param name="data">The main result</param>
+        /// <returns>ServiceTResult with main result</returns>
         protected virtual ServiceTResult<T> HandleResult<T>(T data)
         {
             AddNotifications(this.domainService.GetNotifiable());
@@ -56,6 +67,11 @@ namespace Application.Services.Implementations
             };
         }
 
+        /// <summary>
+        /// Get Notifications from domain, application and return the ServiceResult without "data".
+        /// Useful to return if the operation was successful or error.
+        /// </summary>
+        /// <returns>ServiceResult</returns>
         protected virtual ServiceResult HandleResult()
         {
             AddNotifications(this.domainService.GetNotifiable());

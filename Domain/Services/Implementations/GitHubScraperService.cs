@@ -205,7 +205,7 @@ namespace Domain.Services.Implementations
         }
 
         /// <summary>
-        /// If MaxDegreeOfParallelism param is 2 and PercentualToUseParallelism is 0.4, it means that 40% of processing uses 2 tasks in parallel
+        /// If MaxDegreeOfParallelism param is 2 and PercentualToUseParallelism is 0.4, it means that 40% of processing uses 2 parallel tasks
         /// </summary>
         /// <returns></returns>
         protected int GetRandomMaxDegreeOfParallelism()
