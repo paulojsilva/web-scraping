@@ -41,6 +41,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         var errorMessage = string.IsNullOrWhiteSpace(settings.Technique) ? "is null" : $"'{settings.Technique}' is unknown";
                         throw new System.Exception($"CacheSettings is Enabled, but the Technique {errorMessage}");
                     }
+
+                    // Avoid error ICache injection 
+                    services.AddSingleton(typeof(ICache), typeof(NoCacheService));
                     break;
             }
         }
