@@ -102,6 +102,9 @@ namespace Domain.Services.Implementations
         {
             if (root)
             {
+                // Here, i use the cache! The key is Last commit hash.
+                // Uses the URL like Key is fastest then last commit hash, because to get last commit, i need to load the first page
+                // But if new commit was push, the URL key returns outdated result
                 this.lastCommitHash = parser.GetLastCommitHash();
                 var cachedFileInformation = this.cache.Get<ConcurrentBag<ItemFileInformationResponse>>(lastCommitHash);
                 if (cachedFileInformation != default)
@@ -207,7 +210,7 @@ namespace Domain.Services.Implementations
         /// <summary>
         /// If MaxDegreeOfParallelism param is 2 and PercentualToUseParallelism is 0.4, it means that 40% of processing uses 2 parallel tasks
         /// </summary>
-        /// <returns></returns>
+        /// <returns>1 (no parallel) or MaxDegreeOfParallelism param (run in parallel)</returns>
         protected int GetRandomMaxDegreeOfParallelism()
         {
             var random = new Random().NextDouble();
