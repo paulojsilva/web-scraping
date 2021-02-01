@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
 
                     // Avoid error ICache injection 
-                    services.AddSingleton(typeof(ICache), typeof(NoCacheService));
+                    services.AddSingleton(typeof(ICache), typeof(NotImplementedCacheService));
                     break;
             }
         }
