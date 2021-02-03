@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Api
 {
@@ -14,7 +15,17 @@ namespace Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                    if (env == "DYNO")
+                    {
+                        var port = Environment.GetEnvironmentVariable("PORT");
+                        webBuilder.UseStartup<Startup>().UseUrls("http://*:" + port);
+                    }
+                    else
+                    {
+                        webBuilder.UseStartup<Startup>();
+                    }
                 });
     }
 }
