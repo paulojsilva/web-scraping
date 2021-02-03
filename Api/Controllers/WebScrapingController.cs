@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace MiddlewareSap.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
