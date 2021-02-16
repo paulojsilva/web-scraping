@@ -19,6 +19,7 @@ namespace Domain.Services.Implementations
         protected ConcurrentBag<ItemFileInformationResponse> temporaryFiles = new ConcurrentBag<ItemFileInformationResponse>();
         protected SemaphoreSlim semaphore;
         protected int totalHttpRequests = 0;
+        protected long totalHttpErrors = 0;
         protected string lastCommitHash;
         protected bool usedCache;
 
@@ -61,7 +62,7 @@ namespace Domain.Services.Implementations
         /// <returns>Task</returns>
         public virtual async Task ProcessAsync(string url, bool root = false)
         {
-            if (Invalid)
+            if (AsyncInvalid)
             {
                 // The process runs recursively and in parallel
                 // Some iterate can throw Exception, so this point stop the cycle
@@ -72,7 +73,7 @@ namespace Domain.Services.Implementations
             {
                 using (var response = await this.GetDataAsync(url))
                 {
-                    if (Invalid) return;
+                    if (AsyncInvalid) return;
 
                     using (var stream = await response.Content.ReadAsStreamAsync())
                     {
@@ -91,6 +92,7 @@ namespace Domain.Services.Implementations
             }
             catch (Exception ex)
             {
+                Interlocked.Increment(ref totalHttpErrors);
                 AddNotification(ex.GetType().Name, ex.GetMessageConcatenatedWithInner());
             }
         }
@@ -233,14 +235,22 @@ namespace Domain.Services.Implementations
         {
             if (httpResponse == default)
             {
-                AddNotification(nameof(HttpResponseMessage), "is null");
+                Interlocked.Increment(ref totalHttpErrors);
+                AddNotification(nameof(HttpResponseMessage), "is null");                
             }
             else if (!httpResponse.IsSuccessStatusCode)
             {
+                Interlocked.Increment(ref totalHttpErrors);
                 AddNotification(nameof(HttpResponseMessage), $"{(int)httpResponse.StatusCode} {httpResponse.StatusCode}");
             }
 
             return Valid;
         }
+
+        /// <summary>
+        /// When http request error was catched, the variable is incremented in thread safe.
+        /// This method check if the totalHttpErrors is greater than zero.
+        /// </summary>
+        protected bool AsyncInvalid => Interlocked.Read(ref totalHttpErrors) > 0 || Invalid;
     }
 }
