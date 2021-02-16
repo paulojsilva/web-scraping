@@ -60,7 +60,9 @@ namespace Api
                 endpoints.MapGet("/", async context =>
                 {
                     var now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-                    await context.Response.WriteAsync($"Web Scraping By Paulo Justino da Silva - {now}");
+                    var developer = Configuration.GetValue<string>("Developer");
+                    var by = string.IsNullOrWhiteSpace(developer) ? string.Empty : $"By {developer} ";
+                    await context.Response.WriteAsync($"Web Scraping {by}- {now}");
                 });
             });
         }

@@ -69,7 +69,7 @@ To get around this, we use Semaphore, which limits the number of tasks that use 
 - Create a [Hekoru account](https://www.heroku.com/)
 - Create new app, like **web-scraping-paulera** =D
 - Download and install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
-- Configure ``Dockerfile`` (need to be in the same folder as .csproj WebApi and .sln files)
+- Configure ``Dockerfile`` (need to be in the same folder as .sln file)
 - Navigate to Dockerfile folder and run:
 - Docker build image: ``docker build --rm -f "Dockerfile" -t "web-scraping-paulera:latest" .``
 - Login to Heroku (will open the browser): ``heroku login``
