@@ -7,7 +7,7 @@ Data is retrieved using pure web scraping techniques, without Github's API or we
 
 ``GET`` https://web-scraping-paulera.herokuapp.com/api/WebScraping?url=&api_key=
 
-- ``url``: Public GitHub repository, e.g. `https://github.com/paulojsilva/web-scraping-nolayer`
+- ``url``: Public GitHub repository, e.g. `https://github.com/paulojsilva/web-scraping`
 - ``api_key``: If Authentication enabled, set the security key
 
 ## Tecnologies
