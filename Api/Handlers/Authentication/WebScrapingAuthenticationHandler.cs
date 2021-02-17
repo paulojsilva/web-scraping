@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Api.Handlers.Authentication
 {
+    /// <summary>
+    /// To handle Authentication - Basic or api_key
+    /// </summary>
     public class WebScrapingAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         protected readonly IOptions<AuthenticationSettings> settings;
