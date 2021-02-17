@@ -16,7 +16,7 @@ namespace XUnitTest
             context = BrowsingContext.New(Configuration.Default);
         }
 
-        [Fact(DisplayName = "Last Commit Hash found")]
+        [Fact(DisplayName = "Last Commit Hash - found")]
         public async Task ShouldGetLastCommitHash()
         {
             // Given
@@ -55,7 +55,7 @@ namespace XUnitTest
             lastCommitHash.Should().Be("1cf47cd55b5c745bb8dfb734c8f96614c6b30273");
         }
 
-        [Fact(DisplayName = "Page type discovered")]
+        [Fact(DisplayName = "Page type - discovered")]
         public async Task ShouldDiscoverPageType()
         {
             // Given
@@ -76,7 +76,7 @@ namespace XUnitTest
             pageType.Should().Be(GitHubParser.GitHubPageType.FileContent);
         }
 
-        [Fact(DisplayName = "File informations (lines and size) found")]
+        [Fact(DisplayName = "File informations (lines and size) - found")]
         public async Task ShouldGetFileInformation()
         {
             // Given
@@ -104,7 +104,7 @@ namespace XUnitTest
             fileInformation.Lines.Should().Be(76);
         }
 
-        [Fact(DisplayName = "File name found")]
+        [Fact(DisplayName = "File name - found")]
         public async Task ShouldGetFileNameOnFileContent()
         {
             // Given
@@ -123,7 +123,7 @@ namespace XUnitTest
             fileName.Should().Be("Startup.cs");
         }
 
-        [Fact(DisplayName = "Folder list itens found")]
+        [Fact(DisplayName = "Folder list itens - found")]
         public async Task ShouldGetFolderListItens()
         {
             // Given
