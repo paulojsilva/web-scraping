@@ -84,9 +84,10 @@ To get around this, we use Semaphore, which limits the number of tasks that use 
 - Create a [Docker ID (account)](https://hub.docker.com/)
 - Create a repository
 - Navigate to Dockerfile folder and run:
-- build image: ``docker build --rm -f "Dockerfile" -t "YourDockerIdHere/YourDockerRepositoryHere:latest" .``
+- build image: ``docker build --rm -f "Dockerfile" -t "paulojustinosilvadocker/web-scraping:latest" .``
+	- _paulojustinosilvadocker_ is my Docker ID and _web-scraping_ is my repository
 - login (enter your ID and password): ``docker login``
-- push: ``docker push YourDockerIdHere/YourDockerRepositoryHere:latest``
+- push: ``docker push paulojustinosilvadocker/web-scraping:latest``
 - My Docker Hub: https://hub.docker.com/r/paulojustinosilvadocker/web-scraping
 
 
