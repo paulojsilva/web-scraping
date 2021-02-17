@@ -1,4 +1,5 @@
 ﻿using Flunt.Notifications;
+using System;
 using System.Collections.Generic;
 
 namespace Application.Common
@@ -14,6 +15,15 @@ namespace Application.Common
             Ok,
             Error,
             Warning
+        }
+
+        public static ServiceResult Error(Exception ex)
+        {
+            return new ServiceResult
+            {
+                Notifications = new List<Notification> { new Notification(ex.GetType().Name, ex.GetMessageConcatenatedWithInner()) },
+                Status = StatusResult.Error
+            };
         }
     }
 

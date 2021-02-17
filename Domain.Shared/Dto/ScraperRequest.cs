@@ -4,17 +4,43 @@ namespace Domain.Shared.Dto
 {
     public class ScraperRequest
     {
+        private const string http = "http://";
+        private const string https = "https://";
+
         public ScraperRequest(string url)
         {
             this.Url = url?.ToLowerInvariant();
              
             if (!string.IsNullOrWhiteSpace(Url))
             {
-                this.Host = "http";
+                this.PrefixHttp();
+                this.SetAuthority();
+            }
+        }
 
-                if (Url.StartsWith("https")) this.Host += "s";
+        private void PrefixHttp()
+        {
+            if (this.Url.StartsWith(http))
+            {
+                this.Url = this.Url.Replace(http, https);
+            }
+            else if (!this.Url.StartsWith(https))
+            {
+                this.Url = https + this.Url;
+            }
 
-                this.Host += $"://{new Uri(Url).Authority}";
+            this.Host = https;
+        }
+
+        private void SetAuthority()
+        {
+            try
+            {
+                this.Host += new Uri(Url).Authority;
+            }
+            catch
+            {
+                throw new Exception($"Error when instance new Uri from ({this.Url}) and get Authority");
             }
         }
 

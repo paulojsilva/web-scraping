@@ -19,7 +19,6 @@ namespace Domain.Services.Implementations
         protected ConcurrentBag<ItemFileInformationResponse> temporaryFiles = new ConcurrentBag<ItemFileInformationResponse>();
         protected SemaphoreSlim semaphore;
         protected int totalHttpRequests = 0;
-        protected long totalHttpErrors = 0;
         protected string lastCommitHash;
         protected bool usedCache;
 
@@ -60,9 +59,9 @@ namespace Domain.Services.Implementations
         /// <param name="url"></param>
         /// <param name="root">Indicate if the URL is the main/master/first/root</param>
         /// <returns>Task</returns>
-        public virtual async Task ProcessAsync(string url, bool root = false)
+        protected virtual async Task ProcessAsync(string url, bool root = false)
         {
-            if (AsyncInvalid)
+            if (Invalid)
             {
                 // The process runs recursively and in parallel
                 // Some iterate can throw Exception, so this point stop the cycle
@@ -73,7 +72,7 @@ namespace Domain.Services.Implementations
             {
                 using (var response = await this.GetDataAsync(url))
                 {
-                    if (AsyncInvalid) return;
+                    if (Invalid) return;
 
                     using (var stream = await response.Content.ReadAsStreamAsync())
                     {
@@ -92,7 +91,6 @@ namespace Domain.Services.Implementations
             }
             catch (Exception ex)
             {
-                Interlocked.Increment(ref totalHttpErrors);
                 AddNotification(ex.GetType().Name, ex.GetMessageConcatenatedWithInner());
             }
         }
@@ -136,7 +134,7 @@ namespace Domain.Services.Implementations
         /// <param name="parser">Contain full DOM Elements (IDocument) and helpers to use it</param>
         /// <param name="root">Indicate if the URL is the main/master/first/root</param>
         /// <returns></returns>
-        public virtual async Task DeterminePageContentAsync(GitHubParser parser, bool root)
+        protected virtual async Task DeterminePageContentAsync(GitHubParser parser, bool root)
         {
             if (root)
             {
@@ -171,14 +169,14 @@ namespace Domain.Services.Implementations
         /// Get the filename and total (line, bytes)
         /// </summary>
         /// <param name="parser">Contain full DOM Elements (IDocument) and helpers to use it</param>
-        public virtual void GetSynthesizedFileInformation(GitHubParser parser) => this.temporaryFiles.Add(parser.GetFileInformation());
+        protected virtual void GetSynthesizedFileInformation(GitHubParser parser) => this.temporaryFiles.Add(parser.GetFileInformation());
 
         /// <summary>
         /// Use ProcessAsync recursively to access all folders and files
         /// </summary>
         /// <param name="parser">Contain full DOM Elements (IDocument) and helpers to use it</param>
         /// <returns>A Task</returns>
-        public async Task IterateFolderListAsync(GitHubParser parser)
+        protected async Task IterateFolderListAsync(GitHubParser parser)
         {
             var elementsToNavigate = parser.GetFolderListItens();
 
@@ -235,22 +233,14 @@ namespace Domain.Services.Implementations
         {
             if (httpResponse == default)
             {
-                Interlocked.Increment(ref totalHttpErrors);
                 AddNotification(nameof(HttpResponseMessage), "is null");                
             }
             else if (!httpResponse.IsSuccessStatusCode)
             {
-                Interlocked.Increment(ref totalHttpErrors);
                 AddNotification(nameof(HttpResponseMessage), $"{(int)httpResponse.StatusCode} {httpResponse.StatusCode}");
             }
 
             return Valid;
         }
-
-        /// <summary>
-        /// When http request error was catched, the variable is incremented in thread safe.
-        /// This method check if the totalHttpErrors is greater than zero.
-        /// </summary>
-        protected bool AsyncInvalid => Interlocked.Read(ref totalHttpErrors) > 0 || Invalid;
     }
 }

@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Domain.Shared.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -24,12 +25,19 @@ namespace Api.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> RunAsync([FromQuery] string url)
         {
-            var request = new ScraperRequest(url);
-            var response = await this.scraper.GetGroupingFileInformationAsync(request);
-            return HandleResult(response);
+            try
+            {
+                var request = new ScraperRequest(url);
+                var response = await this.scraper.GetGroupingFileInformationAsync(request);
+                return HandleResult(response);
+            }
+            catch (Exception ex)
+            {
+                return HandleResult(ServiceResult.Error(ex));
+            }
         }
 
-        protected virtual IActionResult HandleResult<T>(ServiceTResult<T> serviceResult)
+        protected virtual IActionResult HandleResult(ServiceResult serviceResult)
         {
             if (serviceResult.Status == ServiceResult.StatusResult.Error)
             {
