@@ -15,8 +15,8 @@ namespace Domain.Dom.GitHub
 
         private static readonly Dictionary<string, double> sizeRepresentationTerms = new Dictionary<string, double>
         {
-            { "quilobyte", 1024 }, { "Kilobyte", 1024 }, { "Megabyte", 1024 * 1024 }, { "Gigabyte", 1024 * 1024 * 1024 }, { "Terabyte", 1024 * 1024 * 1024 }, 
-            { "kb", 1024 }, { "mb", 1024 * 1024 },{ "gb", 1024 * 1024 * 1024 }, { "tb", 1024 * 1024 * 1024 }, 
+            { "quilobyte", 1000 }, { "Kilobyte", 1000 }, { "Megabyte", 1000 * 1000 }, { "Gigabyte", 1000 * 1000 * 1000 }, { "Terabyte", 1000 * 1000 * 1000 }, 
+            { "kb", 1000 }, { "mb", 1000 * 1000 },{ "gb", 1000 * 1000 * 1000 }, { "tb", 1000 * 1000 * 1000 }, 
             { "byte", 1 }
         };
 
