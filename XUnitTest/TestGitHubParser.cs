@@ -100,7 +100,7 @@ namespace XUnitTest
             var fileInformation = parser.GetFileInformation();
 
             // Then
-            fileInformation.Bytes.Should().Be(2385.92);
+            fileInformation.Bytes.Should().Be(2330);
             fileInformation.Lines.Should().Be(76);
         }
 
